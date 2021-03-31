@@ -1,6 +1,6 @@
 *{
     font-family: 'Raleway', sans-serif;
-    color: white;
+    /* //color: white; */
 }
 .parent{
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/beauty.jpg");
@@ -16,6 +16,7 @@
     height: 70px;
     border-bottom: 1px solid black;
     padding: 0 30px;
+    color: white;
 }
 
 .logo{
@@ -66,4 +67,8 @@
 .app-content .button a:hover{
     background-color: white;
     color: #1a631a;
+}
+
+.container{
+    color: #000;
 }
