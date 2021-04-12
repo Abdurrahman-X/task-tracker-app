@@ -5,13 +5,17 @@
  
      // Store error variables
      //$errors = array();
-     $firstnameErr = $lastnameErr = $emailErr = $phoneErr = $passwordErr = "";
+      $firstnameErr = "";
+      $lastnameErr = "";
+      $phoneErr = "";
+      $emailErr = "";
+      $passwordErr = "";
  
      // Hold and Update User Data
      $firstname = "";
      $lastname = "";
-     $email = "";
      $phone = "";
+     $email = "";
      $password = "";
      
  
@@ -23,6 +27,7 @@
          $firstname = filter_var($_POST["firstname"], FILTER_SANITIZE_STRING);
          $lastname = filter_var($_POST["lastname"], FILTER_SANITIZE_STRING);
          $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+         $phone = filter_var($_POST["phone"], FILTER_SANITIZE_STRING);
          $password = $_POST["password"];
  
         //  echo $firstname . "<br>";
@@ -43,6 +48,7 @@
          if (!filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($email)) {
              $emailErr = "Email address is Invalid";
          }
+
          if (empty($password)) {
              $passwordErr = "Password required";
          }
@@ -62,9 +68,9 @@
           if (empty($firstnameErr) && empty($lastnameErr) && empty($emailErr) && empty($passwordErr)) {
              $password = password_hash($password, PASSWORD_DEFAULT);
  
-             $statement2 = $conn-> prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)" );
+             $statement2 = $conn-> prepare("INSERT INTO users (first_name, last_name, phone, email, password) VALUES (?, ?, ?, ?, ?)" );
              
-             $statement2->bind_param('ssss', $firstname, $lastname, $email, $password);
+             $statement2->bind_param('sssss', $firstname, $lastname, $phone, $email, $password);
              
              if ($statement2 -> execute()) {
                  $user_id = $conn -> insert_id;
@@ -85,18 +91,16 @@
          $password = $_POST["password"];
      }
  
-     // Validate
+     // Validate Login Details
      if (empty($email)) {
-         $emailErr = "Email required";
-     }
-     
-     if (!filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($email)) {
-         $emailErr = "Email address is Invalid";
-     }
-     
-     if (empty($password)) {
-         $passwordErr = "Password required";
-     }
+        $emailErr = "Email required";
+    }
+    if ( !filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($email)  ) {
+        $emailErr = "Email address is invalid";
+    }
+    if (empty($password)) {
+        $passwordErr = "Password required";
+    }
  
      if (empty($emailErr) && empty($passwordErr)) {
          $emailSql = "SELECT * FROM users WHERE email =? LIMIT 1";

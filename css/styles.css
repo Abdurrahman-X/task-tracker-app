@@ -328,3 +328,22 @@ position: absolute;
 box-sizing: border-box;
 transform: translate(-50%, -50% );
 padding: 70px 30px; */
+
+/* .app-container-outer {
+    min-height: calc(100vh - 130px); 
+}
+.app-row-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.app-col {
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 5px;
+    color: #000;
+    width: 40%;
+}
+.app-row-center .app-col h1 {
+    text-align: center;
+} */

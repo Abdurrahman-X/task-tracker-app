@@ -15,18 +15,27 @@
                     <?php endif; ?>
                 </div>
                 <div class="mb-3">
-                   
                     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name.." value="<?php echo $lastname ; ?>">
                     <?php if ( !empty($lastnameErr) ): ?>
                       <div class="form-errors"> <?php echo $lastnameErr; ?> </div>
                     <?php endif; ?>
                 </div>
+                
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number.." value="<?php echo $phone ; ?>">
+                    <?php if ( !empty($phoneErr) ): ?>
+                      <div class="form-errors"> <?php echo $phoneErr; ?> </div>
+                    <?php endif; ?>
+                </div>
+
                 <div class="mb-3">
                     <input type="email" class="form-control" id="email" name="email" placeholder="Email.." value="<?php echo $email ; ?>">
                     <?php if ( !empty($emailErr) ): ?>
                       <div class="form-errors"> <?php echo $emailErr; ?> </div>
                     <?php endif; ?>
                 </div>
+
+
                 <div class="mb-3">
                    
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password.." value="<?php echo $password ; ?>">
