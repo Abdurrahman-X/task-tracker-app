@@ -1,6 +1,9 @@
 const setDate = document.querySelector('.date');
 const setTime = document.querySelector('.time');
 const setGreeting = document.querySelector('.greetings');
+const setWeather = document.querySelector('.weather');
+const setBackground = document.querySelector('.parent');
+const setCrypto = document.querySelector('.crypto');
 
 
 function currentDate() {
@@ -59,20 +62,86 @@ function currentDate() {
 // console.log(currDate);
 
 
-console.log($("h1").css("font-size"));
+// Get weather details and set in app
+const params = {
+  access_key: '1995e624929d22dd278c87b550415e27',
+  query: 'Lagos'
+} 
 
-$("#first-id" ).css( "color", "red");
+function validateResponse(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+function logError(error) {
+  console.log('Looks like there was a problem:', error);
+}
+function processData(data) {
+  setWeather.innerHTML = `<div>
+          <div class="weather-icon"><img src="${data.current.weather_icons[0]}" alt="${data.current.weather_descriptions[0]}" ></div>
+          <div class="weather-desc">${data.current.weather_descriptions[0]}</div>
+          <div class="weather-location">${data.location.region}</div>
+          </div>
+          <div class="weather-right">
+          <span class="weather-temp">${data.current.temperature}</span>
+          <span class="weather-o">o</span>
+          <span class="weather-type">C</span>
+          </div>`
+ }
+//Get current weather 
+function fetchWeather() {
+  fetch(`http://api.weatherstack.com/current?access_key=${params.access_key}&query=fetch:ip`)
+  .then(validateResponse)
+  .then(response => response.json())
+  .then(processData)
+  .catch(logError);
+}
 
-$(".first-class" ).css( {
-     "background-color": "yellow", 
-     "border": "5px solid blue"
+fetchWeather();
+
+
+//Get background images from unsplash
+function fetchBackground(){
+  const totalImages = 10;
+  let imgId = Math.floor(Math.random() * totalImages);
+  fetch(`https://source.unsplash.com/collection/32676673/1920x1200/?sig=${imgId}`)
+    .then((response)=> {   
+     setBackground.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("${response.url}")`;
+    })
+    .catch((error)=>{console.log('Looks like there was a problem:', error);});
+}
+
+setInterval(fetchBackground, 50000);
+  
+fetchBackground();
+
+const myHeaders = new Headers({
+  'X-CoinAPI-Key' : '9D4DEAF6-B580-4D2E-B4DE-5C5E076CD3EC',
+  'Accept': 'application/json'
+
 });
 
-let style = {
-    "background-color": "yellow",
-    border: "5px solid red"
-    }
-    $("span" ).css(style);
+//Crypto API for exchange rates
+function fetchCrypto(){
+  fetch('https://rest.coinapi.io/v1/exchangerate/BTC/USD', {
+  headers: myHeaders,
 
-    //$(".first-class" ).text(); // returns "DIV1“
-    $(".first-class" ).text("Changed div text");
+  })
+    .then( response => response.json() )
+    .then( (response)=>{
+      console.log(response) 
+      console.log(response.asset_id_base)
+      console.log(response.src_side_base[0].asset)
+      console.log(response.src_side_base[0].rate)
+      console.log(response.src_side_base[0].volume)
+      setCrypto.innerHTML = `
+              <div>
+              ${response.asset_id_base}/${response.src_side_base[0].asset} Rate: ${response.src_side_base[0].rate} Volume: ${response.src_side_base[0].volume}
+              </div>           
+              `
+    })
+    .catch((error)=>{console.log('Looks like there was a problem:', error);});
+}
+
+fetchCrypto();
